@@ -318,9 +318,14 @@ async function loadSinglePost() {
     // However, we still might want to load sidebar data.
     if (document.querySelector('.post-body') || window.preloadedPost) {
         console.log('SSG/Static content detected. Skipping dynamic render.');
-        // Still load posts for the sidebar
+        // Still load posts for the sidebar and related posts
         const posts = await loadPostsData();
         renderSidebar(posts);
+
+        // Render related posts if we have current post data
+        if (window.preloadedPost) {
+            renderRelatedPosts(window.preloadedPost, posts);
+        }
         return;
     }
 
@@ -439,6 +444,50 @@ function renderSinglePost(post) {
 }
 
 // ============================================
+// RELATED POSTS
+// ============================================
+function renderRelatedPosts(currentPost, allPosts) {
+    const relatedSection = document.getElementById('relatedPosts');
+    const relatedGrid = document.getElementById('relatedPostsGrid');
+
+    if (!relatedSection || !relatedGrid) return;
+
+    // Filter posts by same category, exclude current post
+    let related = allPosts.filter(p =>
+        p.category === currentPost.category && p.slug !== currentPost.slug
+    );
+
+    // If not enough, add random posts
+    if (related.length < 3) {
+        const others = allPosts.filter(p => p.slug !== currentPost.slug);
+        related = [...related, ...others].slice(0, 3);
+    } else {
+        related = related.slice(0, 3);
+    }
+
+    if (related.length === 0) return;
+
+    // Show section
+    relatedSection.style.display = 'block';
+
+    // Render related posts
+    relatedGrid.innerHTML = related.map(post => `
+        <div class="related-post-card" onclick="window.location.href='${post.slug}.html'">
+            <div class="related-post-image">
+                <img src="${escapeHtml(post.image || 'https://via.placeholder.com/400x200')}" 
+                     alt="${escapeHtml(post.title)}" 
+                     loading="lazy">
+            </div>
+            <div class="related-post-content">
+                <span class="related-post-category">${escapeHtml(post.category)}</span>
+                <h4 class="related-post-title">${escapeHtml(post.title)}</h4>
+                <span class="related-post-date">${formatDate(post.date)}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
 // SIDEBAR
 // ============================================
 function renderSidebar(posts) {
@@ -515,9 +564,10 @@ function updateMetaTags(post) {
 // UTILITY FUNCTIONS
 // ============================================
 function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', options);
+    // Format: "Jan 13" (Month Day)
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 function truncateText(text, maxLength) {
