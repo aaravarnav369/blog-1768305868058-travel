@@ -1,0 +1,469 @@
+/**
+ * Universal Blog Theme - Main JavaScript
+ * Handles dynamic content loading from JSON data
+ */
+
+// ============================================
+// CONFIGURATION
+// ============================================
+const CONFIG = {
+    // Dynamically adjust path based on current location (root vs /posts/)
+    dataPath: window.location.pathname.includes('/posts/') ? '../data/posts.json' : 'data/posts.json',
+    postsPerPage: 12,
+    excerptLength: 150
+};
+
+// ============================================
+// STATE MANAGEMENT
+// ============================================
+let postsData = [];
+let currentPost = null;
+
+// ============================================
+// INITIALIZATION
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTheme();
+
+    // Determine which page we're on
+    // Determine which page we're on based on elements present
+    if (document.getElementById('postContent')) {
+        loadSinglePost();
+    } else if (document.getElementById('postsGrid')) {
+        loadAllPosts();
+    }
+
+    // Set current year in footer
+    const yearElement = document.getElementById('currentYear');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+
+    // Mobile menu toggle
+    setupMobileMenu();
+});
+
+// ============================================
+// THEME INITIALIZATION
+// ============================================
+function initializeTheme() {
+    console.log('Universal Blog Theme initialized');
+}
+
+// ============================================
+// MOBILE MENU
+// ============================================
+function setupMobileMenu() {
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const nav = document.querySelector('.main-nav');
+
+    if (toggle && nav) {
+        toggle.addEventListener('click', () => {
+            nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+        });
+    }
+}
+
+// ============================================
+// DATA LOADING
+// ============================================
+async function loadPostsData() {
+    try {
+        console.log('Loading posts from:', CONFIG.dataPath);
+        const response = await fetch(`${CONFIG.dataPath}?t=${Date.now()}`);
+        console.log('Response status:', response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Loaded data:', data);
+        postsData = data.posts || [];
+        console.log('Posts count:', postsData.length);
+        return postsData;
+    } catch (error) {
+        console.error('Error loading posts data:', error);
+        console.error('Path attempted:', CONFIG.dataPath);
+
+        // Show user-friendly error
+        const grid = document.getElementById('postsGrid');
+        if (grid) {
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                    <h3>Unable to load posts</h3>
+                    <p>Error: ${error.message}</p>
+                    <p>Path: ${CONFIG.dataPath}</p>
+                    <p>Please check browser console for details.</p>
+                </div>
+            `;
+        }
+        return [];
+    }
+}
+
+// ============================================
+// HOMEPAGE - POSTS GRID
+// ============================================
+async function loadAllPosts() {
+    const posts = await loadPostsData();
+
+    if (posts.length === 0) {
+        // Show empty state
+        const carousel = document.getElementById('heroCarousel');
+        if (carousel) {
+            carousel.innerHTML = '<div class="carousel-loading"><p style="color: white;">No posts yet. Create your first post!</p></div>';
+        }
+        return;
+    }
+
+    // Load hero carousel with random featured posts
+    renderHeroCarousel(posts);
+
+    // Load posts grid
+    renderPostsGrid(posts);
+    renderSidebar(posts);
+}
+
+// ============================================
+// HERO CAROUSEL
+// ============================================
+function renderHeroCarousel(posts) {
+    const carousel = document.getElementById('heroCarousel');
+    if (!carousel) return;
+
+    // Get 3-5 random posts for carousel
+    const featuredCount = Math.min(5, posts.length);
+    const shuffled = [...posts].sort(() => 0.5 - Math.random());
+    const featured = shuffled.slice(0, featuredCount);
+
+    carousel.innerHTML = featured.map(post => `
+        <div class="carousel-item" onclick="window.location.href='posts/${post.slug}.html'">
+            <img src="${post.image || 'https://via.placeholder.com/400x200?text=No+Image'}" 
+                 alt="${post.title}" 
+                 class="carousel-item-image"
+                 onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">
+            <div class="carousel-item-content">
+                <span class="carousel-item-category">${post.category || 'Article'}</span>
+                <h3 class="carousel-item-title">${post.title}</h3>
+                <p class="carousel-item-excerpt">${post.excerpt || ''}</p>
+                <a href="posts/${post.slug}.html" class="carousel-item-link">
+                    Read More →
+                </a>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderPostsGrid(posts) {
+    const grid = document.getElementById('postsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    posts.forEach(post => {
+        const card = createPostCard(post);
+        grid.appendChild(card);
+    });
+}
+
+function createPostCard(post) {
+    const card = document.createElement('article');
+    card.className = 'post-card';
+
+    const imageHtml = post.image
+        ? `<div class="post-card-image">
+               <img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}" loading="lazy">
+           </div>`
+        : '';
+
+    const excerpt = truncateText(post.excerpt, CONFIG.excerptLength);
+    const postUrl = getLinkPath('post', post.slug);
+
+    card.innerHTML = `
+        ${imageHtml}
+        <div class="post-card-content">
+            <div class="post-meta">
+                <span class="post-category">${escapeHtml(post.category)}</span>
+                <span class="post-date">${formatDate(post.date)}</span>
+            </div>
+            <h2 class="post-card-title">
+                <a href="${postUrl}">${escapeHtml(post.title)}</a>
+            </h2>
+            <p class="post-card-excerpt">${escapeHtml(excerpt)}</p>
+            <a href="${postUrl}" class="read-more">Read More</a>
+        </div>
+    `;
+
+    return card;
+}
+
+// Helper for relative paths
+function getLinkPath(type, slugOrCat) {
+    const isPostPage = window.location.pathname.includes('/posts/');
+
+    if (type === 'home') {
+        return isPostPage ? '../index.html' : 'index.html';
+    }
+    if (type === 'post') {
+        // If we are in /posts/, sibling is just slug.html
+        // If we are in /, child is posts/slug.html
+        return isPostPage ? `${slugOrCat}.html` : `posts/${slugOrCat}.html`;
+    }
+    if (type === 'category') {
+        const base = isPostPage ? '../index.html' : 'index.html';
+        return `${base}#${slugOrCat.toLowerCase()}`;
+    }
+    return '#';
+}
+
+// ============================================
+// SINGLE POST PAGE
+// ============================================
+async function loadSinglePost() {
+    // SSG CHECK: If the page already has content (static generation), don't fetch/render.
+    // However, we still might want to load sidebar data.
+    if (document.querySelector('.post-body') || window.preloadedPost) {
+        console.log('SSG/Static content detected. Skipping dynamic render.');
+        // Still load posts for the sidebar
+        const posts = await loadPostsData();
+        renderSidebar(posts);
+        return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug');
+
+    console.log('Loading single post for slug:', slug);
+
+    if (!slug) {
+        showError('Post not found (No slug provided)');
+        return;
+    }
+
+    const posts = await loadPostsData();
+    console.log('Loaded posts:', posts.length);
+
+    const post = posts.find(p => p.slug === slug);
+    console.log('Found post:', post ? post.title : 'None');
+
+    if (!post) {
+        showError('Post not found (Slug mismatch)');
+        return;
+    }
+
+    currentPost = post;
+    try {
+        renderSinglePost(post);
+    } catch (e) {
+        console.error('Render error:', e);
+        showError('Error rendering post: ' + e.message);
+    }
+    renderSidebar(posts);
+    updateMetaTags(post);
+}
+
+function renderSinglePost(post) {
+    const container = document.getElementById('postContent');
+    if (!container) return;
+
+    const article = document.createElement('div');
+
+    // Header
+    const headerHtml = `
+        <header class="post-header">
+            <div class="post-meta">
+                <span class="post-category">${escapeHtml(post.category)}</span>
+                <span class="post-date">${formatDate(post.date)}</span>
+            </div>
+            <h1 class="post-title">${escapeHtml(post.title)}</h1>
+        </header>
+    `;
+
+    // Featured Image
+    const imageHtml = post.image
+        ? `<div class="post-featured-image">
+               <img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}">
+           </div>`
+        : '';
+
+    // Content
+    let contentHtml = '<div class="post-body">';
+
+    // Paragraphs
+    if (post.content.paragraphs && post.content.paragraphs.length > 0) {
+        post.content.paragraphs.forEach((para, index) => {
+            contentHtml += `<p>${escapeHtml(para)}</p>`;
+
+            // Insert mid-content ad after 3rd paragraph
+            if (index === 2) {
+                contentHtml += `
+                    <div class="ad-mid-content">
+                        <div class="ad-placeholder">
+                            <p class="ad-label">Advertisement</p>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    }
+
+    // Ingredients (for recipe posts)
+    if (post.content.ingredients && post.content.ingredients.length > 0) {
+        contentHtml += '<h2>Ingredients</h2>';
+        contentHtml += '<ul class="ingredients-list">';
+        post.content.ingredients.forEach(ingredient => {
+            contentHtml += `<li>${escapeHtml(ingredient)}</li>`;
+        });
+        contentHtml += '</ul>';
+    }
+
+    // Steps (for recipe posts or how-to guides)
+    if (post.content.steps && post.content.steps.length > 0) {
+        contentHtml += '<h2>Instructions</h2>';
+        contentHtml += '<ol class="steps-list">';
+        post.content.steps.forEach(step => {
+            contentHtml += `<li>${escapeHtml(step)}</li>`;
+        });
+        contentHtml += '</ol>';
+    }
+
+    // End-content ad
+    contentHtml += `
+        <div class="ad-end-content">
+            <div class="ad-placeholder">
+                <p class="ad-label">Advertisement</p>
+            </div>
+        </div>
+    `;
+
+    contentHtml += '</div>';
+
+    // Combine all parts
+    article.innerHTML = headerHtml + imageHtml + contentHtml;
+    container.innerHTML = '';
+    container.appendChild(article);
+}
+
+// ============================================
+// SIDEBAR
+// ============================================
+function renderSidebar(posts) {
+    renderCategories(posts);
+    renderRecentPosts(posts);
+}
+
+function renderCategories(posts) {
+    const container = document.getElementById('categoryList');
+    if (!container) return;
+
+    // Get unique categories
+    const categories = [...new Set(posts.map(p => p.category))];
+
+    container.innerHTML = '';
+    categories.forEach(category => {
+        const count = posts.filter(p => p.category === category).length;
+        const li = document.createElement('li');
+        const catUrl = getLinkPath('category', category);
+        li.innerHTML = `<a href="${catUrl}">${escapeHtml(category)} (${count})</a>`;
+        container.appendChild(li);
+    });
+}
+
+function renderRecentPosts(posts) {
+    const container = document.getElementById('recentPosts');
+    if (!container) return;
+
+    // Sort by date (newest first) and take top 5
+    const recentPosts = [...posts]
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 5);
+
+    container.innerHTML = '';
+    recentPosts.forEach(post => {
+        const li = document.createElement('li');
+        const postUrl = getLinkPath('post', post.slug);
+        li.innerHTML = `<a href="${postUrl}">${escapeHtml(post.title)}</a>`;
+        container.appendChild(li);
+    });
+}
+
+// ============================================
+// SEO & META TAGS
+// ============================================
+function updateMetaTags(post) {
+    // Update title
+    document.title = `${post.title} - Universal Blog Theme`;
+
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+        metaDescription.setAttribute('content', post.excerpt);
+    }
+
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+        ogTitle.setAttribute('content', post.title);
+    }
+
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) {
+        ogDescription.setAttribute('content', post.excerpt);
+    }
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage && post.image) {
+        ogImage.setAttribute('content', post.image);
+    }
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', options);
+}
+
+function truncateText(text, maxLength) {
+    if (!text || text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + '...';
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function showError(message) {
+    const grids = [
+        document.getElementById('postsGrid'),
+        document.getElementById('postContent')
+    ];
+
+    grids.forEach(grid => {
+        if (grid) {
+            grid.innerHTML = `
+                <div class="loading" style="color: #ef4444;">
+                    ${escapeHtml(message)}
+                </div>
+            `;
+        }
+    });
+}
+
+// ============================================
+// EXPORT FOR TESTING
+// ============================================
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        loadPostsData,
+        formatDate,
+        truncateText,
+        escapeHtml
+    };
+}
