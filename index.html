@@ -42,24 +42,33 @@
 
     <!-- Hero Carousel Section -->
     <section class="hero-carousel">
-        <div class="container">
-            <div class="carousel-wrapper">
-                <div class="carousel-header">
-                    <h2 class="section-title">Featured Articles</h2>
-                    <div class="carousel-controls">
-                        <button class="carousel-btn prev" aria-label="Previous">‹</button>
-                        <button class="carousel-btn next" aria-label="Next">›</button>
+        <div class="carousel-container">
+            <div class="carousel-slides" id="heroCarousel">
+                <!-- Loading state -->
+                <div class="carousel-slide active">
+                    <div class="carousel-image-wrapper">
+                        <div class="carousel-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Loading featured posts...</p>
+                        </div>
                     </div>
                 </div>
-                <div class="carousel-track" id="heroCarousel">
-                    <!-- Carousel items will be loaded dynamically -->
-                    <div class="carousel-loading">
-                        <div class="loading-spinner"></div>
-                        <p>Loading featured posts...</p>
-                    </div>
-                </div>
-                <div class="carousel-dots" id="carouselDots"></div>
             </div>
+
+            <!-- Navigation Arrows -->
+            <button class="carousel-nav prev" id="carouselPrev" aria-label="Previous slide">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="carousel-nav next" id="carouselNext" aria-label="Next slide">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+
+            <!-- Dots Indicator -->
+            <div class="carousel-dots" id="carouselDots"></div>
         </div>
     </section>
 
