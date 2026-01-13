@@ -1,12 +1,8 @@
-```
-
 /* ===================================
    CSS VARIABLES - EASY THEMING
    =================================== */
 :root {
-    /* Colors - Default Black Theme */
-    - CSS Variables */
-    /* Colors - Default Black Theme */
+    /* Colors */
     --primary-color: #2563eb;
     --accent-color: #f59e0b;
     --background-color: #ffffff;
