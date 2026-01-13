@@ -40,13 +40,25 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
+    <!-- Hero Carousel Section -->
+    <section class="hero-carousel">
         <div class="container">
-            <div class="hero-content">
-                <h2 class="hero-title">Traveltest</h2>
-                <p class="hero-description">Explore our collection of travel content, tips, and insights.</p>
-                <a href="#postsGrid" class="hero-btn">Explore Articles</a>
+            <div class="carousel-wrapper">
+                <div class="carousel-header">
+                    <h2 class="section-title">Featured Articles</h2>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                        <button class="carousel-btn next" aria-label="Next">›</button>
+                    </div>
+                </div>
+                <div class="carousel-track" id="heroCarousel">
+                    <!-- Carousel items will be loaded dynamically -->
+                    <div class="carousel-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading featured posts...</p>
+                    </div>
+                </div>
+                <div class="carousel-dots" id="carouselDots"></div>
             </div>
         </div>
     </section>
