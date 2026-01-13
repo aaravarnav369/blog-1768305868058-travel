@@ -126,8 +126,12 @@ async function loadAllPosts() {
 }
 
 // ============================================
-// HERO CAROUSEL
+// HERO CAROUSEL - AUTO-SLIDING
 // ============================================
+let currentSlide = 0;
+let carouselInterval;
+let carouselPosts = [];
+
 function renderHeroCarousel(posts) {
     const carousel = document.getElementById('heroCarousel');
     if (!carousel) return;
@@ -135,24 +139,113 @@ function renderHeroCarousel(posts) {
     // Get 3-5 random posts for carousel
     const featuredCount = Math.min(5, posts.length);
     const shuffled = [...posts].sort(() => 0.5 - Math.random());
-    const featured = shuffled.slice(0, featuredCount);
+    carouselPosts = shuffled.slice(0, featuredCount);
 
-    carousel.innerHTML = featured.map(post => `
-        <div class="carousel-item" onclick="window.location.href='posts/${post.slug}.html'">
-            <img src="${post.image || 'https://via.placeholder.com/400x200?text=No+Image'}" 
-                 alt="${post.title}" 
-                 class="carousel-item-image"
-                 onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">
-            <div class="carousel-item-content">
-                <span class="carousel-item-category">${post.category || 'Article'}</span>
-                <h3 class="carousel-item-title">${post.title}</h3>
-                <p class="carousel-item-excerpt">${post.excerpt || ''}</p>
-                <a href="posts/${post.slug}.html" class="carousel-item-link">
-                    Read More →
+    // Render slides
+    carousel.innerHTML = carouselPosts.map((post, index) => `
+        <div class="carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+            <div class="carousel-image-wrapper">
+                <img src="${post.image || 'https://via.placeholder.com/1200x600?text=No+Image'}" 
+                     alt="${escapeHtml(post.title)}" 
+                     class="carousel-image"
+                     onerror="this.src='https://via.placeholder.com/1200x600?text=No+Image'">
+                <div class="carousel-overlay"></div>
+            </div>
+            <div class="carousel-content">
+                <div class="carousel-category">${escapeHtml(post.category || 'Article')}</div>
+                <h2 class="carousel-title">${escapeHtml(post.title)}</h2>
+                <p class="carousel-excerpt">${escapeHtml(post.excerpt || '').substring(0, 150)}...</p>
+                <a href="posts/${post.slug}.html" class="carousel-btn-read">
+                    Read Article
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </a>
             </div>
         </div>
     `).join('');
+
+    // Render dots
+    const dotsContainer = document.getElementById('carouselDots');
+    if (dotsContainer) {
+        dotsContainer.innerHTML = carouselPosts.map((_, index) =>
+            `<button class="carousel-dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Go to slide ${index + 1}"></button>`
+        ).join('');
+
+        // Add dot click handlers
+        dotsContainer.querySelectorAll('.carousel-dot').forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                goToSlide(index);
+            });
+        });
+    }
+
+    // Setup navigation
+    setupCarouselNavigation();
+
+    // Start auto-slide
+    startAutoSlide();
+}
+
+function setupCarouselNavigation() {
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            goToSlide(currentSlide + 1);
+        });
+    }
+
+    // Pause on hover
+    const carousel = document.querySelector('.hero-carousel');
+    if (carousel) {
+        carousel.addEventListener('mouseenter', stopAutoSlide);
+        carousel.addEventListener('mouseleave', startAutoSlide);
+    }
+}
+
+function goToSlide(index) {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+
+    if (slides.length === 0) return;
+
+    // Wrap around
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+
+    // Remove active class from all
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    // Add active class to current
+    slides[index].classList.add('active');
+    if (dots[index]) dots[index].classList.add('active');
+
+    currentSlide = index;
+}
+
+function startAutoSlide() {
+    stopAutoSlide(); // Clear any existing interval
+    carouselInterval = setInterval(() => {
+        goToSlide(currentSlide + 1);
+    }, 5000); // Change slide every 5 seconds
+}
+
+function stopAutoSlide() {
+    if (carouselInterval) {
+        clearInterval(carouselInterval);
+        carouselInterval = null;
+    }
 }
 
 function renderPostsGrid(posts) {
