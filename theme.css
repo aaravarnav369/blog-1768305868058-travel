@@ -214,10 +214,12 @@ a:hover {
 /* Single Post Layout Change */
 .single-post .content-wrapper {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 1fr 300px;
+    /* Sidebar Right */
     gap: var(--spacing-xl);
     align-items: start;
 }
+
 
 
 
@@ -238,15 +240,18 @@ a:hover {
     background-color: var(--background-color);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Astra-like soft shadow */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Very subtle border */
 }
 
 .post-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
+
 
 .post-card-image {
     width: 100%;
@@ -338,9 +343,11 @@ a:hover {
     background-color: var(--background-color);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Astra-like soft shadow */
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
+
 
 .post-header {
     padding: var(--spacing-lg);
@@ -550,12 +557,15 @@ a:hover {
 
 .sidebar-widget {
     background-color: var(--background-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
+    /* More padding */
     margin-bottom: var(--spacing-lg);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Astra-like soft shadow */
 }
+
 
 .widget-title {
     font-family: var(--font-heading);
@@ -675,20 +685,35 @@ a:hover {
     }
 
     /* Reset Single Post Grid for Mobile */
+    .single-post .content-wrapper {
+        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+    }
+
     .single-post .sidebar,
     .single-post .post-article,
     .single-post .related-posts {
-        grid-column: auto;
-        grid-row: auto;
+        grid-column: auto !important;
+        grid-row: auto !important;
+        width: 100%;
     }
 
     .single-post .sidebar {
         position: static;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: var(--spacing-md);
         margin-top: var(--spacing-xl);
+        order: 3;
+        /* Ensure it stays at bottom */
     }
+
+    .single-post .post-article {
+        order: 1;
+    }
+
+    .single-post .related-posts {
+        order: 2;
+    }
+
 
 
     .posts-grid {
