@@ -525,14 +525,12 @@ a:hover {
     height: fit-content;
 }
 
-/* Single Post: Left Sidebar */
+/* Single Post: Right Sidebar */
 .single-post .sidebar {
-    grid-column: 1;
-    /* Left Column */
+    grid-column: 2;
+    /* Right Column */
     grid-row: 1 / span 2;
-    /* Span across height of article + related */
     display: block;
-    /* Stack widgets vertically */
     border-top: none;
     padding-top: 0;
     margin-top: 0;
@@ -541,17 +539,18 @@ a:hover {
 }
 
 .single-post .post-article {
-    grid-column: 2;
-    /* Right Column */
+    grid-column: 1;
+    /* Left Column */
 }
 
 .single-post .related-posts {
-    grid-column: 2;
-    /* Right Column, below article */
+    grid-column: 1;
+    /* Left Column */
     margin-top: var(--spacing-xl);
     padding-top: var(--spacing-xl);
     border-top: 1px solid var(--border-color);
 }
+
 
 
 
