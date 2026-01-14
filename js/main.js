@@ -143,7 +143,7 @@ function renderHeroCarousel(posts) {
 
     // Render slides
     carousel.innerHTML = carouselPosts.map((post, index) => `
-        <div class="carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+        <div class="carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}" data-slug="${post.slug}">
             <div class="carousel-image-wrapper">
                 <img src="${post.image || 'https://via.placeholder.com/1200x600?text=No+Image'}" 
                      alt="${escapeHtml(post.title)}" 
@@ -155,7 +155,7 @@ function renderHeroCarousel(posts) {
                 <div class="carousel-category">${escapeHtml(post.category || 'Article')}</div>
                 <h2 class="carousel-title">${escapeHtml(post.title)}</h2>
                 <p class="carousel-excerpt">${escapeHtml(post.excerpt || '').substring(0, 150)}...</p>
-                <a href="posts/${post.slug}.html" class="carousel-btn-read">
+                <a href="posts/${post.slug}.html" class="carousel-btn-read" onclick="event.stopPropagation()">
                     Read Article
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -165,6 +165,22 @@ function renderHeroCarousel(posts) {
             </div>
         </div>
     `).join('');
+
+    // Add click handlers to slides
+    document.querySelectorAll('.carousel-slide').forEach(slide => {
+        slide.addEventListener('click', (e) => {
+            // Don't navigate if clicking the button or navigation arrows
+            if (e.target.closest('.carousel-btn-read') ||
+                e.target.closest('.carousel-nav') ||
+                e.target.closest('.carousel-dot')) {
+                return;
+            }
+            const slug = slide.dataset.slug;
+            if (slug) {
+                window.location.href = `posts/${slug}.html`;
+            }
+        });
+    });
 
     // Render dots
     const dotsContainer = document.getElementById('carouselDots');
