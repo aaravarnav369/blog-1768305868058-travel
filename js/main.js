@@ -9,15 +9,18 @@
 const CONFIG = {
     // Dynamically adjust path based on current location (root vs /posts/)
     dataPath: window.location.pathname.includes('/posts/') ? '../data/posts.json' : 'data/posts.json',
-    postsPerPage: 12,
+    postsPerPage: 8, // Changed to 8 per page
     excerptLength: 150
 };
+
 
 // ============================================
 // STATE MANAGEMENT
 // ============================================
 let postsData = [];
 let currentPost = null;
+let currentPage = 1; // Track current page
+
 
 // ============================================
 // INITIALIZATION
@@ -120,10 +123,10 @@ async function loadAllPosts() {
     // Load hero carousel with random featured posts
     renderHeroCarousel(posts);
 
-    // Load posts grid
-    renderPostsGrid(posts);
-    renderSidebar(posts);
+    // Initial render of paged posts
+    renderPagedPosts(1);
 }
+
 
 // ============================================
 // HERO CAROUSEL - AUTO-SLIDING
@@ -152,8 +155,8 @@ function renderHeroCarousel(posts) {
                 <div class="carousel-overlay"></div>
             </div>
             <div class="carousel-content">
-                <div class="carousel-category">${escapeHtml(post.category || 'Article')}</div>
                 <h2 class="carousel-title">${escapeHtml(post.title)}</h2>
+
                 <p class="carousel-excerpt">${escapeHtml(post.excerpt || '').substring(0, 150)}...</p>
                 <a href="posts/${post.slug}.html" class="carousel-btn-read" onclick="event.stopPropagation()">
                     Read Article
@@ -275,6 +278,79 @@ function renderPostsGrid(posts) {
         grid.appendChild(card);
     });
 }
+
+function renderPagedPosts(page) {
+    if (!postsData || postsData.length === 0) return;
+
+    currentPage = page;
+    const startIndex = (page - 1) * CONFIG.postsPerPage;
+    const endIndex = startIndex + CONFIG.postsPerPage;
+    const pagedPosts = postsData.slice(startIndex, endIndex);
+
+    renderPostsGrid(pagedPosts);
+    renderPaginationControls();
+
+    // Also render sidebar if on first load/page 1 (or always, keeping it static is fine)
+    if (page === 1) {
+        renderSidebar(postsData);
+    }
+
+    // Scroll to top of grid
+    const hero = document.querySelector('.hero-carousel');
+    if (hero) {
+        // Scroll just past hero
+        // hero.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function renderPaginationControls() {
+    const totalPages = Math.ceil(postsData.length / CONFIG.postsPerPage);
+    let paginationContainer = document.getElementById('pagination');
+
+    // Create if doesn't exist (it should be in HTML, but fallback here)
+    if (!paginationContainer) {
+        paginationContainer = document.createElement('div');
+        paginationContainer.id = 'pagination';
+        paginationContainer.className = 'pagination';
+        document.querySelector('.posts-section').appendChild(paginationContainer);
+    }
+
+    if (totalPages <= 1) {
+        paginationContainer.innerHTML = '';
+        return;
+    }
+
+    let html = '';
+
+    // Prev Button
+    if (currentPage > 1) {
+        html += `<button class="page-btn prev" onclick="changePage(${currentPage - 1})">Previous</button>`;
+    }
+
+    // Page Numbers
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            html += `<button class="page-num ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            html += `<span class="page-dots">...</span>`;
+        }
+    }
+
+    // Next Button
+    if (currentPage < totalPages) {
+        html += `<button class="page-btn next" onclick="changePage(${currentPage + 1})">Next</button>`;
+    }
+
+    paginationContainer.innerHTML = html;
+}
+
+// Global function for onclick handlers
+window.changePage = function (page) {
+    renderPagedPosts(page);
+};
+
 
 function createPostCard(post) {
     const card = document.createElement('article');
