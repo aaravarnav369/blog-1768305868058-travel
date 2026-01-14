@@ -211,11 +211,14 @@ a:hover {
 }
 
 /* Single Post Layout Change */
+/* Single Post Layout Change */
 .single-post .content-wrapper {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 300px 1fr;
     gap: var(--spacing-xl);
+    align-items: start;
 }
+
 
 
 /* ===================================
@@ -349,16 +352,19 @@ a:hover {
     font-family: var(--font-heading);
     font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 1.5rem;
+    /* Increased spacing */
     line-height: 1.2;
     color: var(--text-color);
 }
 
 
+
 .post-featured-image {
     width: 100%;
+    aspect-ratio: 16/9;
+    /* Constrain aspect ratio */
     height: auto;
-    /* Remove fixed height */
     overflow: hidden;
     background-color: var(--background-alt);
     border-radius: var(--radius-lg);
@@ -367,9 +373,12 @@ a:hover {
 
 .post-featured-image img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    /* Ensure image covers the area */
     display: block;
 }
+
 
 
 .post-body {
@@ -505,25 +514,38 @@ a:hover {
 /* ===================================
    SIDEBAR
    =================================== */
-/* ===================================
-   SIDEBAR
-   =================================== */
 .sidebar {
-    /* position: sticky; */
-    /* Removed for single post bottom layout */
-    /* top: 100px; */
     height: fit-content;
 }
 
-/* When sidebar is at bottom (single post), arrange widgets in grid/flex */
+/* Single Post: Left Sidebar */
 .single-post .sidebar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--spacing-lg);
-    border-top: 1px solid var(--border-color);
-    padding-top: var(--spacing-xl);
-    margin-top: var(--spacing-xl);
+    grid-column: 1;
+    /* Left Column */
+    grid-row: 1 / span 2;
+    /* Span across height of article + related */
+    display: block;
+    /* Stack widgets vertically */
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    position: sticky;
+    top: 20px;
 }
+
+.single-post .post-article {
+    grid-column: 2;
+    /* Right Column */
+}
+
+.single-post .related-posts {
+    grid-column: 2;
+    /* Right Column, below article */
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--border-color);
+}
+
 
 
 .sidebar-widget {
@@ -652,12 +674,22 @@ a:hover {
         grid-template-columns: 1fr;
     }
 
-    .sidebar {
+    /* Reset Single Post Grid for Mobile */
+    .single-post .sidebar,
+    .single-post .post-article,
+    .single-post .related-posts {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .single-post .sidebar {
         position: static;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: var(--spacing-md);
+        margin-top: var(--spacing-xl);
     }
+
 
     .posts-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
