@@ -383,14 +383,14 @@ function renderSinglePost(post) {
 
     const article = document.createElement('div');
 
-    // Header
+    // Header - Title FIRST, then Meta
     const headerHtml = `
         <header class="post-header">
+            <h1 class="post-title">${escapeHtml(post.title)}</h1>
             <div class="post-meta">
                 <span class="post-category">${escapeHtml(post.category)}</span>
                 <span class="post-date">${formatDate(post.date)}</span>
             </div>
-            <h1 class="post-title">${escapeHtml(post.title)}</h1>
         </header>
     `;
 
@@ -582,8 +582,11 @@ function updateMetaTags(post) {
 function formatDate(dateString) {
     if (!dateString) return '';
     const date = new Date(dateString);
-    // Format: "Jan 13" (Month Day)
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    // Format: "13-Jan" (Day-Month)
+    // Using en-GB to get day first, but standardizing with short month
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    return `${day}-${month}`;
 }
 
 function truncateText(text, maxLength) {
