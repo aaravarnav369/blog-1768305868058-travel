@@ -210,6 +210,14 @@ a:hover {
     gap: var(--spacing-xl);
 }
 
+/* Single Post Layout Change */
+.single-post .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+
 /* ===================================
    POSTS GRID
    =================================== */
@@ -341,23 +349,28 @@ a:hover {
     font-family: var(--font-heading);
     font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
     line-height: 1.2;
     color: var(--text-color);
 }
 
+
 .post-featured-image {
     width: 100%;
-    height: 400px;
+    height: auto;
+    /* Remove fixed height */
     overflow: hidden;
     background-color: var(--background-alt);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-lg);
 }
 
 .post-featured-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
 }
+
 
 .post-body {
     padding: var(--spacing-xl) var(--spacing-lg);
@@ -418,14 +431,100 @@ a:hover {
     margin-top: var(--spacing-xl);
 }
 
+/* Related Posts */
+.related-posts {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--border-color);
+}
+
+.related-posts-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.related-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.related-post-card {
+    display: flex;
+    gap: var(--spacing-md);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.related-post-card:hover {
+    transform: translateY(-2px);
+}
+
+.related-post-image {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.related-post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.related-post-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.related-post-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    color: var(--text-color);
+}
+
+.related-post-category {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.related-post-date {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+
+/* ===================================
+   SIDEBAR
+   =================================== */
 /* ===================================
    SIDEBAR
    =================================== */
 .sidebar {
-    position: sticky;
-    top: 100px;
+    /* position: sticky; */
+    /* Removed for single post bottom layout */
+    /* top: 100px; */
     height: fit-content;
 }
+
+/* When sidebar is at bottom (single post), arrange widgets in grid/flex */
+.single-post .sidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+    padding-top: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
 
 .sidebar-widget {
     background-color: var(--background-color);
