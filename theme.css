@@ -208,6 +208,53 @@ a:hover {
     min-height: 60vh;
 }
 
+/* Page UI (About, Contact, Privacy) */
+.page-content {
+    background: white;
+    max-width: 800px;
+    /* Constrain reading width */
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.page-content h1 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.page-content h2 {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    color: var(--text-color);
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--background-alt);
+    padding-bottom: var(--spacing-xs);
+}
+
+.page-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.page-content ul {
+    margin-bottom: var(--spacing-lg);
+    padding-left: var(--spacing-lg);
+}
+
+.page-content li {
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.05rem;
+}
+
+
 .content-wrapper {
     display: grid;
     grid-template-columns: 1fr 300px;
