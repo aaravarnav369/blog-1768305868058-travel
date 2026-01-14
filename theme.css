@@ -840,7 +840,10 @@ a:hover {
    =================================== */
 .hero-carousel {
     position: relative;
-    width: 100%;
+    width: 100vw;
+    /* Full viewport width */
+    margin-left: calc(-50vw + 50%);
+    /* Break out of container */
     height: 450px;
     /* Reduced from 600px */
     overflow: hidden;
@@ -868,6 +871,8 @@ a:hover {
     opacity: 0;
     transition: opacity 1s ease-in-out;
     pointer-events: none;
+    cursor: pointer;
+    /* Make it clickable */
 }
 
 .carousel-slide.active {
@@ -885,6 +890,7 @@ a:hover {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
 }
 
 .carousel-overlay {
@@ -894,9 +900,9 @@ a:hover {
     width: 100%;
     height: 100%;
     background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(0, 0, 0, 0.5) 50%,
-            rgba(0, 0, 0, 0.8) 100%);
+            rgba(0, 0, 0, 0.2) 0%,
+            rgba(0, 0, 0, 0.4) 50%,
+            rgba(0, 0, 0, 0.7) 100%);
 }
 
 .carousel-content {
@@ -907,7 +913,10 @@ a:hover {
     padding: 60px;
     color: white;
     z-index: 2;
-    max-width: 800px;
+    max-width: 1200px;
+    margin: 0 auto;
+    cursor: pointer;
+    /* Make text clickable too */
 }
 
 .carousel-category {
