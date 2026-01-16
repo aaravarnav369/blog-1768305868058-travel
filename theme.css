@@ -1308,3 +1308,56 @@ a:hover {
         right: 15px;
     }
 }
+
+/* ===================================
+   PAGINATION
+   =================================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+}
+
+.page-btn,
+.page-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 16px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-num {
+    padding: 0;
+    /* Square for numbers */
+}
+
+.page-btn:hover,
+.page-num:hover {
+    background-color: var(--background-alt);
+    border-color: var(--text-color);
+}
+
+.page-num.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.page-dots {
+    color: var(--text-light);
+    font-weight: bold;
+    padding: 0 4px;
+}
