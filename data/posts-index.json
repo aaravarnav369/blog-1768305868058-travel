@@ -1,30 +1,174 @@
 {
-    "posts": [
-        {
-            "slug": "chocolate-chip-cookies-recipe",
-            "title": "Perfect Chocolate Chip Cookies Recipe",
-            "excerpt": "Learn how to make the perfect chocolate chip cookies with this easy-to-follow recipe. These cookies are crispy on the outside, chewy on the inside.",
-            "category": "Recipes",
-            "date": "2024-12-15",
-            "image": "/images/chocolate-cookies.jpg"
-        },
-        {
-            "slug": "future-of-ai-technology",
-            "title": "The Future of AI Technology: Trends to Watch in 2025",
-            "excerpt": "Artificial Intelligence is evolving at an unprecedented pace. Discover the key AI trends that will shape technology, business, and society.",
-            "category": "Technology",
-            "date": "2024-12-20",
-            "image": "/images/ai-technology.jpg"
-        },
-        {
-            "slug": "mindfulness-meditation-beginners",
-            "title": "Mindfulness Meditation for Beginners: A Complete Guide",
-            "excerpt": "Start your mindfulness journey with this comprehensive beginner's guide. Learn simple techniques to reduce stress and improve focus.",
-            "category": "Health",
-            "date": "2024-12-28",
-            "image": "/images/meditation.jpg"
-        }
-    ],
-    "generatedAt": "2024-12-31T00:00:00.000Z",
-    "count": 3
+  "posts": [
+    {
+      "slug": "discover-karachi-your-ultimate-guide-to-the-city-of-lights-best-attractions",
+      "title": "Discover Karachi: Your Ultimate Guide to the City of Lights' Best Attractions",
+      "excerpt": "Explore Karachi's vibrant culture, historic landmarks, and modern attractions. From serene beaches to bustling markets, find your next adventure in the City of Lights!",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "/images/posts/discover-karachi-your-ultimate-guide-to-the-city-of-lights-best-attractions.jpg"
+    },
+    {
+      "slug": "burj-khalifa-dubai-s-sky-high-wonder-your-ultimate-visitor-s-guide",
+      "title": "Burj Khalifa: Dubai's Sky-High Wonder & Your Ultimate Visitor's Guide",
+      "excerpt": "Soar above the clouds and witness unparalleled views from the world's tallest building. Discover why the Burj Khalifa is a must-visit icon on your Dubai adventure.",
+      "category": "Landmarks",
+      "date": "2026-01-16",
+      "image": "/images/posts/burj-khalifa-dubai-s-sky-high-wonder-your-ultimate-visitor-s-guide.jpg"
+    },
+    {
+      "slug": "china-unveiled-an-epic-journey-through-ancient-wonders-modern-marvels",
+      "title": "China Unveiled: An Epic Journey Through Ancient Wonders & Modern Marvels",
+      "excerpt": "Embark on an unforgettable adventure through China, where ancient history meets futuristic cities. Discover breathtaking landscapes, rich culture, and incredible cuisine.",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "/images/posts/china-unveiled-an-epic-journey-through-ancient-wonders-modern-marvels.png"
+    },
+    {
+      "slug": "discover-the-hidden-gems-of-asia-top-countries-to-visit",
+      "title": "Discover the Hidden Gems of Asia: Top Countries to Visit",
+      "excerpt": "Explore the vibrant cultures, stunning landscapes, and mouth-watering cuisine of Asia's top countries.",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "../images/posts/discover-the-hidden-gems-of-asia-top-countries-to-visit.png"
+    },
+    {
+      "slug": "discover-the-hidden-gems-of-turkey-top-10-best-places-to-visit",
+      "title": "Discover the Hidden Gems of Turkey: Top 10 Best Places to Visit",
+      "excerpt": "Explore the rich history, vibrant culture, and breathtaking landscapes of Turkey, from Istanbul to Cappadocia.",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "../images/posts/discover-the-hidden-gems-of-turkey-top-10-best-places-to-visit.png"
+    },
+    {
+      "slug": "discover-the-magic-of-dubai-a-city-of-marvels-and-wonders",
+      "title": "Discover the Magic of Dubai: A City of Marvels and Wonders",
+      "excerpt": "Experience the opulence and excitement of Dubai, a city that seamlessly blends traditional Middle Eastern culture with modern luxury.",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "../images/posts/discover-the-magic-of-dubai-a-city-of-marvels-and-wonders.jpg"
+    },
+    {
+      "slug": "discover-the-magic-of-dubai-top-attractions-and-experiences",
+      "title": "Discover the Magic of Dubai: Top Attractions and Experiences",
+      "excerpt": "Explore the vibrant city of Dubai, from iconic landmarks to luxurious shopping malls and breathtaking natural wonders.",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "https://via.placeholder.com/1600x900?text=Image+Upload+Error"
+    },
+    {
+      "slug": "savoring-the-flavors-of-mumbai-a-street-food-lover-s-paradise",
+      "title": "Savoring the Flavors of Mumbai: A Street Food Lover's Paradise",
+      "excerpt": "Discover the vibrant world of Mumbai street food, where flavors, aromas, and textures come together in a culinary experience like no other.",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "https://via.placeholder.com/1600x900?text=Image+Upload+Error"
+    },
+    {
+      "slug": "discover-the-flavors-of-karachi-a-foodie-s-paradise",
+      "title": "Discover the Flavors of Karachi: A Foodie's Paradise",
+      "excerpt": "Experience the vibrant street food scene in Karachi, where traditional flavors meet modern twists.",
+      "category": "Travel",
+      "date": "2026-01-16",
+      "image": "https://via.placeholder.com/1600x900?text=Image+Upload+Error"
+    },
+    {
+      "slug": "taste-of-paradise-unveiling-bali-s-irresistible-culinary-journey",
+      "title": "Taste of Paradise: Unveiling Bali's Irresistible Culinary Journey",
+      "excerpt": "Embark on a delicious adventure through Bali! Discover the vibrant spices, fresh ingredients, and unforgettable dishes that define the Island of Gods' incredible food scene.",
+      "category": "Food",
+      "date": "2026-01-16",
+      "image": "https://via.placeholder.com/1600x900?text=Image+Upload+Error"
+    },
+    {
+      "slug": "lahore-s-best-your-ultimate-guide-to-must-visit-places-in-pakistan-s-cultural-heart",
+      "title": "Lahore's Best: Your Ultimate Guide to Must-Visit Places in Pakistan's Cultural Heart",
+      "excerpt": "Discover the vibrant history, stunning architecture, and rich culture of Lahore, Pakistan's beating heart. Explore its top attractions, from ancient forts to bustling bazaars.",
+      "category": "Travel",
+      "date": "2026-01-14",
+      "image": "../images/posts/lahore-s-best-your-ultimate-guide-to-must-visit-places-in-pakistan-s-cultural-heart.jpg"
+    },
+    {
+      "slug": "karachi-uncovered-your-ultimate-guide-to-the-city-s-must-visit-attractions",
+      "title": "Karachi Uncovered: Your Ultimate Guide to the City's Must-Visit Attractions",
+      "excerpt": "Dive into Karachi's vibrant heart! Discover historic landmarks, stunning beaches, bustling markets, and an unforgettable culinary journey in Pakistan's largest city.",
+      "category": "Travel",
+      "date": "2026-01-14",
+      "image": "../images/posts/karachi-uncovered-your-ultimate-guide-to-the-city-s-must-visit-attractions.png"
+    },
+    {
+      "slug": "the-ultimate-guide-to-bangkok-night-lights-bites-unforgettable-sights",
+      "title": "The Ultimate Guide to Bangkok Night: Lights, Bites & Unforgettable Sights",
+      "excerpt": "Discover Bangkok after dark! From sizzling street food to sky-high bars, river cruises to vibrant markets, experience the electrifying pulse of Thailand's capital as the sun sets.",
+      "category": "Travel",
+      "date": "2026-01-14",
+      "image": "../images/posts/the-ultimate-guide-to-bangkok-night-lights-bites-unforgettable-sights.jpg"
+    },
+    {
+      "slug": "lahore-s-timeless-heart-why-the-walled-city-offers-the-ultimate-experience",
+      "title": "Lahore's Timeless Heart: Why the Walled City Offers the Ultimate Experience",
+      "excerpt": "Discover Lahore's vibrant soul within the historic Walled City. A captivating journey through ancient forts, grand mosques, bustling bazaars, and legendary food streets awaits.",
+      "category": "Travel",
+      "date": "2026-01-13",
+      "image": "../images/posts/lahore-s-timeless-heart-why-the-walled-city-offers-the-ultimate-experience.jpg"
+    },
+    {
+      "slug": "karachi-s-hidden-gems-a-traveler-s-guide-to-the-city-of-lights",
+      "title": "Karachi's Hidden Gems: A Traveler's Guide to the City of Lights",
+      "excerpt": "Discover the vibrant heart of Pakistan! Explore Karachi's rich history, stunning beaches, delicious food, and bustling markets in this ultimate travel guide.",
+      "category": "Travel",
+      "date": "2026-01-13",
+      "image": "../images/posts/karachi-s-hidden-gems-a-traveler-s-guide-to-the-city-of-lights.jpg"
+    },
+    {
+      "slug": "top-cities-to-visit-in-2026-your-ultimate-global-travel-guide",
+      "title": "Top Cities to Visit in 2026: Your Ultimate Global Travel Guide",
+      "excerpt": "Discover the must-visit destinations for 2026! From vibrant cultural hubs to serene escapes, plan your next unforgettable adventure with our top picks.",
+      "category": "Travel",
+      "date": "2026-01-13",
+      "image": "../images/posts/top-cities-to-visit-in-2026-your-ultimate-global-travel-guide.jpg"
+    },
+    {
+      "slug": "discover-your-perfect-paradise-unveiling-bali-s-best-island-escapes",
+      "title": "Discover Your Perfect Paradise: Unveiling Bali's Best Island Escapes",
+      "excerpt": "Beyond the mainland, Bali's surrounding islands offer unique adventures, tranquil retreats, and breathtaking beauty. Find your ideal island paradise!",
+      "category": "Travel",
+      "date": "2026-01-13",
+      "image": "../images/posts/discover-your-perfect-paradise-unveiling-bali-s-best-island-escapes.jpg"
+    },
+    {
+      "slug": "unveiling-new-york-s-best-your-ultimate-guide-to-nyc-s-must-visit-destinations",
+      "title": "Unveiling New York's Best: Your Ultimate Guide to NYC's Must-Visit Destinations",
+      "excerpt": "From iconic landmarks to hidden gems, discover the very best places New York has to offer. Plan your unforgettable adventure now!",
+      "category": "Travel",
+      "date": "2026-01-13",
+      "image": "../images/posts/unveiling-new-york-s-best-your-ultimate-guide-to-nyc-s-must-visit-destinations.jpg"
+    },
+    {
+      "slug": "beyond-the-smile-unveiling-the-multifaceted-allure-of-thailand-s-beauties",
+      "title": "Beyond the Smile: Unveiling the Multifaceted Allure of Thailand's Beauties",
+      "excerpt": "Discover the captivating essence of 'Thailand Beauties,' a blend of grace, warmth, and an inner glow that extends far beyond their captivating smiles. Explore what truly defines their unique charm.",
+      "category": "Culture",
+      "date": "2026-01-13",
+      "image": "../images/posts/beyond-the-smile-unveiling-the-multifaceted-allure-of-thailand-s-beauties.jpg"
+    },
+    {
+      "slug": "discover-your-perfect-slice-of-paradise-the-ultimate-guide-to-bali-s-best-places",
+      "title": "Discover Your Perfect Slice of Paradise: The Ultimate Guide to Bali's Best Places",
+      "excerpt": "Bali offers diverse experiences from spiritual retreats to vibrant nightlife. Find your ideal spot, whether it's cultural Ubud or trendy Canggu!",
+      "category": "Travel Guide",
+      "date": "2026-01-13",
+      "image": "../images/posts/discover-your-perfect-slice-of-paradise-the-ultimate-guide-to-bali-s-best-places.jpg"
+    },
+    {
+      "slug": "bali-s-best-5-unveiling-the-island-of-gods-top-must-visit-destinations",
+      "title": "Bali's Best 5: Unveiling the Island of Gods' Top Must-Visit Destinations",
+      "excerpt": "Discover the magic of Bali! From cultural havens to breathtaking beaches and adventurous peaks, explore the top 5 must-visit spots for an unforgettable Indonesian escape.",
+      "category": "TravelGuide",
+      "date": "2026-01-13",
+      "image": "../images/posts/bali-s-best-5-unveiling-the-island-of-gods-top-must-visit-destinations.jpg"
+    }
+  ],
+  "generatedAt": "2026-01-16T13:53:21.017Z",
+  "count": 21
 }
