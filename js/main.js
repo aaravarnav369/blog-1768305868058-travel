@@ -73,7 +73,8 @@ function setupMobileMenu() {
 async function loadPostsData() {
     try {
         console.log('Loading posts from:', CONFIG.dataPath);
-        const response = await fetch(`${CONFIG.dataPath}?t=${Date.now()}`);
+        const response = await fetch(CONFIG.dataPath);  // Allow browser caching for faster reloads
+
         console.log('Response status:', response.status);
 
         if (!response.ok) {
