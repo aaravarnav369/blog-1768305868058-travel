@@ -8,7 +8,14 @@
 // ============================================
 const CONFIG = {
     // Dynamically adjust path based on current location (root vs /posts/)
-    dataPath: window.location.pathname.includes('/posts/') ? '../data/posts.json' : 'data/posts.json',
+    // Use lightweight index for homepage (no full content)
+    indexPath: window.location.pathname.includes('/posts/')
+        ? '../data/posts-index.json'
+        : 'data/posts-index.json',
+    // Keep full posts.json path for backward compatibility
+    dataPath: window.location.pathname.includes('/posts/')
+        ? '../data/posts.json'
+        : 'data/posts.json',
     postsPerPage: 8, // Changed to 8 per page
     excerptLength: 150
 };
@@ -70,10 +77,35 @@ function setupMobileMenu() {
 // ============================================
 // DATA LOADING
 // ============================================
+
+// NEW: Load lightweight posts index for homepage (fast!)
+async function loadPostsIndex() {
+    try {
+        console.log('📥 Loading lightweight index from:', CONFIG.indexPath);
+        const response = await fetch(CONFIG.indexPath);
+
+        if (!response.ok) {
+            // Fallback to full posts.json if index doesn't exist
+            console.log('⚠️ Index not found, falling back to posts.json');
+            return await loadPostsData();
+        }
+
+        const data = await response.json();
+        console.log(`✅ Loaded posts index: ${data.count || data.posts?.length || 0} posts`);
+        postsData = data.posts || [];
+        return postsData;
+    } catch (error) {
+        console.error('Error loading posts index:', error);
+        // Fallback to full data
+        return await loadPostsData();
+    }
+}
+
+// LEGACY: Load full posts data (used for backward compatibility)
 async function loadPostsData() {
     try {
         console.log('Loading posts from:', CONFIG.dataPath);
-        const response = await fetch(CONFIG.dataPath);  // Allow browser caching for faster reloads
+        const response = await fetch(CONFIG.dataPath);
 
         console.log('Response status:', response.status);
 
@@ -110,7 +142,8 @@ async function loadPostsData() {
 // HOMEPAGE - POSTS GRID
 // ============================================
 async function loadAllPosts() {
-    const posts = await loadPostsData();
+    // Use lightweight index for homepage (MUCH faster!)
+    const posts = await loadPostsIndex();
 
     if (posts.length === 0) {
         // Show empty state
@@ -411,8 +444,8 @@ async function loadSinglePost() {
     // However, we still might want to load sidebar data.
     if (document.querySelector('.post-body') || window.preloadedPost) {
         console.log('SSG/Static content detected. Skipping dynamic render.');
-        // Still load posts for the sidebar and related posts
-        const posts = await loadPostsData();
+        // Load lightweight index for sidebar and related posts (FAST!)
+        const posts = await loadPostsIndex();
         renderSidebar(posts);
 
         // Render related posts if we have current post data
